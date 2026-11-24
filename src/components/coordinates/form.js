@@ -133,7 +133,7 @@ const CoordinatesForm = ({ id }) => {
                         className="input-data no-add"
                         value={form.x}
                         onChange={set('x')}
-                        placeholder="Абсцисса не больше 743"
+                        placeholder="Абсцисса не больше 974"
                     />
                 </Field>
                 <Field label="Координата Y">

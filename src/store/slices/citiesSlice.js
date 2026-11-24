@@ -8,13 +8,16 @@ export const INITIAL_QUERY = {
     filterValue: '',
     sortField: '',
     ascending: true,
-    offset: 0,
+    cursor: null,
     limit: PAGE_SIZES[0],
 };
 
 const initialState = {
     items: [],
     totalCount: 0,
+    nextCursor: null,
+    hasMore: false,
+    cursors: [null],
     loading: false,
     notice: '',
     query: INITIAL_QUERY,
@@ -25,19 +28,30 @@ const citiesSlice = createSlice({
     initialState,
     reducers: {
         setPage(state, action) {
-            const { items, totalCount } = action.payload;
+            const { items, totalCount, nextCursor, hasMore } = action.payload;
             state.items = items;
             state.totalCount = totalCount;
+            state.nextCursor = nextCursor ?? null;
+            state.hasMore = Boolean(hasMore);
         },
         setLoading(state, action) {
             state.loading = action.payload;
         },
-
         setQuery(state, action) {
-            state.query = { ...state.query, ...action.payload, offset: 0 };
+            state.cursors = [null];
+            state.query = { ...state.query, ...action.payload, cursor: null };
         },
-        setOffset(state, action) {
-            state.query.offset = action.payload;
+        nextPage(state) {
+            if (state.hasMore && state.nextCursor) {
+                state.cursors.push(state.nextCursor);
+                state.query.cursor = state.nextCursor;
+            }
+        },
+        prevPage(state) {
+            if (state.cursors.length > 1) {
+                state.cursors.pop();
+                state.query.cursor = state.cursors[state.cursors.length - 1];
+            }
         },
         setNotice(state, action) {
             state.notice = action.payload;
@@ -51,5 +65,5 @@ const citiesSlice = createSlice({
     },
 });
 
-export const { setPage, setLoading, setQuery, setOffset, setNotice, clearNotice } = citiesSlice.actions;
+export const { setPage, setLoading, setQuery, nextPage, prevPage, setNotice, clearNotice } = citiesSlice.actions;
 export default citiesSlice.reducer;

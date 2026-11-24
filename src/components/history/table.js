@@ -5,6 +5,7 @@ import { Messages } from '../main/message';
 import { history } from '../../controllers/operations';
 import { OPERATION_STATUSES, OPERATION_TYPES } from '../../utils/enums';
 import useUpdates from '../../utils/useUpdates';
+import useCursorPager from '../../utils/useCursorPager';
 
 const Cell = ({ children, className }) => (
     <td>
@@ -19,22 +20,23 @@ const HistoryTable = () => {
     const isAdmin = user?.level === 'ADMIN';
     const [operations, setOperations] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
-    const [offset, setOffset] = useState(0);
+    const { cursor, page, hasPrev, hasMore, applyPage, next, prev } = useCursorPager();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     const load = useCallback(async () => {
         setLoading(true);
-        const result = await history({ offset, limit: PAGE_LIMIT });
+        const result = await history({ cursor, limit: PAGE_LIMIT });
         setLoading(false);
         if (result.success) {
             setOperations(result.data.items);
             setTotalCount(result.data.totalCount);
+            applyPage(result.data);
             setError('');
         } else {
             setError(result.data);
         }
-    }, [offset]);
+    }, [cursor, applyPage]);
 
     useEffect(() => {
         load();
@@ -44,8 +46,6 @@ const HistoryTable = () => {
 
     const columns = isAdmin ? 8 : 7;
     const pages = Math.max(1, Math.ceil(totalCount / PAGE_LIMIT));
-    const page = Math.floor(offset / PAGE_LIMIT) + 1;
-    const turn = (delta) => setOffset((prev) => Math.max(0, prev + delta * PAGE_LIMIT));
 
     return (
         <Card
@@ -104,7 +104,7 @@ const HistoryTable = () => {
                 </table>
             </div>
             <div className="pager">
-                <button type="button" className="pill-btn" disabled={offset === 0 || loading} onClick={() => turn(-1)}>
+                <button type="button" className="pill-btn" disabled={!hasPrev || loading} onClick={prev}>
                     Назад
                 </button>
                 <span className="info">
@@ -113,8 +113,8 @@ const HistoryTable = () => {
                 <button
                     type="button"
                     className="pill-btn"
-                    disabled={offset + PAGE_LIMIT >= totalCount || loading}
-                    onClick={() => turn(1)}
+                    disabled={!hasMore || loading}
+                    onClick={next}
                 >
                     Вперёд
                 </button>

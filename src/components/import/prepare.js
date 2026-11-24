@@ -300,7 +300,7 @@ const Prepare = () => {
                                         onChange={set('populationDensity')}
                                     />
                                 </Field>
-                                <Field label="Высота, м">
+                                <Field label="Высота">
                                     <input
                                         type="text"
                                         inputMode="decimal"

@@ -189,8 +189,8 @@ const GovernorForm = ({ id }) => {
                 title="Удаление губернатора"
                 text={
                     del.needsReplacement
-                        ? `Удалить губернатора «${item?.name}»? Связанные города будут переданы замене.`
-                        : `Удалить губернатора «${item?.name}»?`
+                        ? `Удалить губернатора (${item?.name})? Связанные города будут переданы замене.`
+                        : `Удалить губернатора (${item?.name})?`
                 }
                 confirmText="Удалить"
                 confirmDisabled={del.confirmDisabled}

@@ -55,7 +55,7 @@ export const CITY_COLUMNS = [
     { field: 'population', title: 'Население', get: (city) => city.population },
     { field: 'establishmentDate', title: 'Дата основания', get: (city) => city.establishmentDate },
     { field: 'capital', title: 'Столица', get: (city) => (city.capital ? 'да' : 'нет') },
-    { field: 'metersAboveSeaLevel', title: 'Высота, м', get: (city) => dash(city.metersAboveSeaLevel) },
+    { field: 'metersAboveSeaLevel', title: 'Высота', get: (city) => dash(city.metersAboveSeaLevel) },
     { field: 'populationDensity', title: 'Плотность', get: (city) => city.populationDensity },
     {
         field: 'climate',

@@ -8,7 +8,7 @@ const pageParams = (query) => ({
         filterValue: query.filterValue || undefined,
         sortField: query.sortField || undefined,
         ascending: query.ascending,
-        offset: query.offset,
+        cursor: query.cursor ?? undefined,
         limit: query.limit,
     },
 });

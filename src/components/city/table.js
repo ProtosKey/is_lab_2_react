@@ -8,7 +8,7 @@ import { remove } from '../../controllers/cities';
 import { CITY_COLUMNS } from '../../utils/enums';
 import { formatNumber } from '../../utils/format';
 import useUpdates from '../../utils/useUpdates';
-import { clearNotice, setNotice, setOffset, setQuery } from '../../store/slices/citiesSlice';
+import { clearNotice, nextPage, prevPage, setNotice, setQuery } from '../../store/slices/citiesSlice';
 
 const COLUMNS = CITY_COLUMNS.length + 1;
 
@@ -22,13 +22,14 @@ const cell = (value) => {
 const CityTable = ({ error, notice, reload }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { items, totalCount, loading, query } = useSelector((state) => state.cities);
+    const { items, totalCount, hasMore, cursors, loading, query } = useSelector((state) => state.cities);
     const [target, setTarget] = useState(null);
     const [busy, setBusy] = useState(false);
     const [deleteError, setDeleteError] = useState('');
 
     const pages = Math.max(1, Math.ceil(totalCount / query.limit));
-    const page = Math.floor(query.offset / query.limit) + 1;
+    const page = cursors.length;
+    const hasPrev = cursors.length > 1;
 
     useUpdates(['cities'], reload);
 
@@ -36,11 +37,6 @@ const CityTable = ({ error, notice, reload }) => {
         const active = query.sortField === field;
         dispatch(clearNotice());
         dispatch(setQuery({ sortField: field, ascending: active ? !query.ascending : true }));
-    };
-
-    const turn = (direction) => {
-        dispatch(clearNotice());
-        dispatch(setOffset(Math.max(0, query.offset + direction * query.limit)));
     };
 
     const closeDelete = () => {
@@ -61,8 +57,8 @@ const CityTable = ({ error, notice, reload }) => {
         dispatch(setNotice(`Город «${target.name}» удалён`));
         closeDelete();
 
-        if (items.length === 1 && query.offset > 0) {
-            dispatch(setOffset(query.offset - query.limit));
+        if (items.length === 1 && hasPrev) {
+            dispatch(prevPage());
         } else {
             reload();
         }
@@ -154,7 +150,15 @@ const CityTable = ({ error, notice, reload }) => {
                 </table>
             </div>
             <div className="pager">
-                <button type="button" className="pill-btn" disabled={query.offset === 0 || loading} onClick={() => turn(-1)}>
+                <button
+                    type="button"
+                    className="pill-btn"
+                    disabled={!hasPrev || loading}
+                    onClick={() => {
+                        dispatch(clearNotice());
+                        dispatch(prevPage());
+                    }}
+                >
                     Назад
                 </button>
                 <span className="info">
@@ -163,8 +167,11 @@ const CityTable = ({ error, notice, reload }) => {
                 <button
                     type="button"
                     className="pill-btn"
-                    disabled={query.offset + query.limit >= totalCount || loading}
-                    onClick={() => turn(1)}
+                    disabled={!hasMore || loading}
+                    onClick={() => {
+                        dispatch(clearNotice());
+                        dispatch(nextPage());
+                    }}
                 >
                     Вперёд
                 </button>

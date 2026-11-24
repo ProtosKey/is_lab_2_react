@@ -259,7 +259,7 @@ const CityForm = ({ id }) => {
                                 className="input-data no-add"
                                 value={form.coordinatesX}
                                 onChange={change('coordinatesX')}
-                                placeholder="Абсцисса не больше 743"
+                                placeholder="Абсцисса не больше 974"
                             />
                         </Field>
                         <Field label="Координата Y">
@@ -304,7 +304,7 @@ const CityForm = ({ id }) => {
                         placeholder="Человек на квадратный километр"
                     />
                 </Field>
-                <Field label="Высота, м">
+                <Field label="Высота">
                     <input
                         type="text"
                         inputMode="decimal"

@@ -2,8 +2,8 @@ import { api, request } from './api';
 
 const ALL_LIMIT = 1000;
 
-export const findPage = ({ offset = 0, limit = 10 } = {}) =>
-    request(() => api.get('/governors', { params: { offset, limit } }), 'Ошибка загрузки губернаторов');
+export const findPage = ({ cursor = null, limit = 10 } = {}) =>
+    request(() => api.get('/governors', { params: { cursor: cursor ?? undefined, limit } }), 'Ошибка загрузки губернаторов');
 
 export const findAll = async () => {
     const result = await request(

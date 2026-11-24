@@ -187,7 +187,7 @@ const CountOperation = () => {
     return (
         <Card title="Города заданной высоты" centered className="form-card">
             <div className="grid-input">
-                <Field label="Высота, м">
+                <Field label="Высота">
                     <input
                         type="text"
                         inputMode="decimal"

@@ -9,6 +9,7 @@ import { setGovernors } from '../../store/slices/listSlices';
 import useList from '../../utils/useList';
 import useDeleteUsage from '../../utils/useDeleteUsage';
 import useUpdates from '../../utils/useUpdates';
+import useCursorPager from '../../utils/useCursorPager';
 import { plural } from '../../utils/format';
 
 const PAGE_LIMIT = 10;
@@ -18,7 +19,7 @@ const GovernorsSection = () => {
     const { items: allItems, load: loadAll } = useList((state) => state.governors.items, setGovernors, api.findAll);
     const [pageItems, setPageItems] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
-    const [offset, setOffset] = useState(0);
+    const { cursor, page, hasPrev, hasMore, applyPage, next, prev } = useCursorPager();
     const [pageLoading, setPageLoading] = useState(true);
     const [loadError, setLoadError] = useState('');
     const [notice, setNotice] = useState('');
@@ -26,25 +27,26 @@ const GovernorsSection = () => {
     const [target, setTarget] = useState(null);
     const del = useDeleteUsage(api.usage);
 
-    const loadPage = useCallback(async (nextOffset = offset) => {
+    const loadPage = useCallback(async (nextCursor = cursor) => {
         setPageLoading(true);
-        const result = await api.findPage({ offset: nextOffset, limit: PAGE_LIMIT });
+        const result = await api.findPage({ cursor: nextCursor, limit: PAGE_LIMIT });
         setPageLoading(false);
         if (result.success) {
             setPageItems(result.data.items);
             setTotalCount(result.data.totalCount);
+            applyPage(result.data);
             setLoadError('');
         } else {
             setLoadError(result.data);
         }
-    }, [offset]);
+    }, [cursor, applyPage]);
 
     useEffect(() => {
-        loadPage(offset);
-    }, [offset, loadPage]);
+        loadPage(cursor);
+    }, [cursor, loadPage]);
 
     useUpdates(['governors'], () => {
-        loadPage(offset);
+        loadPage(cursor);
         loadAll();
     });
 
@@ -69,18 +71,15 @@ const GovernorsSection = () => {
         }
         setNotice(`Губернатор «${target.name}» удалён`);
         closeDelete();
-        const nextOffset = pageItems.length <= 1 && offset > 0 ? Math.max(0, offset - PAGE_LIMIT) : offset;
-        if (nextOffset !== offset) {
-            setOffset(nextOffset);
+        if (pageItems.length <= 1 && hasPrev) {
+            prev();
         } else {
-            await loadPage(nextOffset);
+            await loadPage(cursor);
         }
         await loadAll();
     };
 
     const pages = Math.max(1, Math.ceil(totalCount / PAGE_LIMIT));
-    const page = Math.floor(offset / PAGE_LIMIT) + 1;
-    const turn = (delta) => setOffset((prev) => Math.max(0, prev + delta * PAGE_LIMIT));
 
     return (
         <>
@@ -117,7 +116,11 @@ const GovernorsSection = () => {
                                 </tr>
                             )}
                             {pageItems.map((item) => (
-                                <tr key={item.id}>
+                                <tr
+                                    key={item.id}
+                                    className="clickable"
+                                    onClick={() => navigate(`/governor/${item.id}`)}
+                                >
                                     <td>
                                         <div className="cell">{item.id}</div>
                                     </td>
@@ -132,10 +135,24 @@ const GovernorsSection = () => {
                                     </td>
                                     <td>
                                         <div className="cell actions">
-                                            <button type="button" className="small-btn" onClick={() => navigate(`/governor/${item.id}`)}>
+                                            <button
+                                                type="button"
+                                                className="small-btn"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    navigate(`/governor/${item.id}`);
+                                                }}
+                                            >
                                                 Изменить
                                             </button>
-                                            <button type="button" className="small-btn danger" onClick={() => openDelete(item)}>
+                                            <button
+                                                type="button"
+                                                className="small-btn danger"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    openDelete(item);
+                                                }}
+                                            >
                                                 Удалить
                                             </button>
                                         </div>
@@ -146,7 +163,7 @@ const GovernorsSection = () => {
                     </table>
                 </div>
                 <div className="pager">
-                    <button type="button" className="pill-btn" disabled={offset === 0 || pageLoading} onClick={() => turn(-1)}>
+                    <button type="button" className="pill-btn" disabled={!hasPrev || pageLoading} onClick={prev}>
                         Назад
                     </button>
                     <span className="info">
@@ -155,8 +172,8 @@ const GovernorsSection = () => {
                     <button
                         type="button"
                         className="pill-btn"
-                        disabled={offset + PAGE_LIMIT >= totalCount || pageLoading}
-                        onClick={() => turn(1)}
+                        disabled={!hasMore || pageLoading}
+                        onClick={next}
                     >
                         Вперёд
                     </button>
