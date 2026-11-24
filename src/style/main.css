@@ -179,10 +179,7 @@
 }
 
 .input-data[readonly] {
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
+    cursor: text;
 }
 
 .input-data[readonly]:focus {

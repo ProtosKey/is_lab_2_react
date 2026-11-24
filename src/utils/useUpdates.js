@@ -42,7 +42,6 @@ const useUpdates = (topics, onUpdate) => {
                         }
                     }, 200);
                 } catch {
-                    // ignore malformed frames
                 }
             };
 

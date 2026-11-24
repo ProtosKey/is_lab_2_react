@@ -101,8 +101,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 .header-user .role {
@@ -113,8 +111,6 @@ body {
     font-size: .8rem;
     font-weight: bold;
     white-space: nowrap;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 .context {
