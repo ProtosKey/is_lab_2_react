@@ -7,7 +7,9 @@ import RegisterPage from './pages/register';
 import MainPage from './pages/main';
 import CityPage from './pages/city';
 import CoordinatesPage from './pages/coordinates';
+import CoordinatePage from './pages/coordinate';
 import GovernorsPage from './pages/governors';
+import GovernorPage from './pages/governor';
 import ImportPage from './pages/import';
 import PreparePage from './pages/prepare';
 import SpecialPage from './pages/special';
@@ -53,7 +55,11 @@ function App() {
                 <Route path="/city" element={<CityPage />} />
                 <Route path="/city/:id" element={<CityPage />} />
                 <Route path="/coordinates" element={<CoordinatesPage />} />
+                <Route path="/coordinate" element={<CoordinatePage />} />
+                <Route path="/coordinate/:id" element={<CoordinatePage />} />
                 <Route path="/governors" element={<GovernorsPage />} />
+                <Route path="/governor" element={<GovernorPage />} />
+                <Route path="/governor/:id" element={<GovernorPage />} />
                 <Route path="/import" element={<ImportPage />} />
                 <Route path="/prepare" element={<PreparePage />} />
                 <Route path="/special" element={<SpecialPage />} />
