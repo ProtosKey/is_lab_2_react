@@ -7,6 +7,7 @@ import Modal from '../main/modal';
 import { remove } from '../../controllers/cities';
 import { CITY_COLUMNS } from '../../utils/enums';
 import { formatNumber } from '../../utils/format';
+import useUpdates from '../../utils/useUpdates';
 import { clearNotice, setNotice, setOffset, setQuery } from '../../store/slices/citiesSlice';
 
 const COLUMNS = CITY_COLUMNS.length + 1;
@@ -28,6 +29,8 @@ const CityTable = ({ error, notice, reload }) => {
 
     const pages = Math.max(1, Math.ceil(totalCount / query.limit));
     const page = Math.floor(query.offset / query.limit) + 1;
+
+    useUpdates(['cities'], reload);
 
     const sort = (field) => {
         const active = query.sortField === field;

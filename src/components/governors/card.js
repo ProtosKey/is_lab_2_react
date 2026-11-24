@@ -8,6 +8,7 @@ import * as api from '../../controllers/governors';
 import { setGovernors } from '../../store/slices/listSlices';
 import useList from '../../utils/useList';
 import useDeleteUsage from '../../utils/useDeleteUsage';
+import useUpdates from '../../utils/useUpdates';
 import { plural } from '../../utils/format';
 
 const PAGE_LIMIT = 10;
@@ -41,6 +42,11 @@ const GovernorsSection = () => {
     useEffect(() => {
         loadPage(offset);
     }, [offset, loadPage]);
+
+    useUpdates(['governors'], () => {
+        loadPage(offset);
+        loadAll();
+    });
 
     const closeDelete = () => {
         setTarget(null);

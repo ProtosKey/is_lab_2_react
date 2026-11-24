@@ -8,6 +8,7 @@ import * as api from '../../controllers/coordinates';
 import { setCoordinates } from '../../store/slices/listSlices';
 import useList from '../../utils/useList';
 import useDeleteUsage from '../../utils/useDeleteUsage';
+import useUpdates from '../../utils/useUpdates';
 import { plural } from '../../utils/format';
 
 const PAGE_LIMIT = 10;
@@ -41,6 +42,11 @@ const CoordinatesSection = () => {
     useEffect(() => {
         loadPage(offset);
     }, [offset, loadPage]);
+
+    useUpdates(['coordinates'], () => {
+        loadPage(offset);
+        loadAll();
+    });
 
     const closeDelete = () => {
         setTarget(null);

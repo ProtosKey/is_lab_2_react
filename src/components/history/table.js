@@ -4,6 +4,7 @@ import { Card } from '../main/card';
 import { Messages } from '../main/message';
 import { history } from '../../controllers/operations';
 import { OPERATION_STATUSES, OPERATION_TYPES } from '../../utils/enums';
+import useUpdates from '../../utils/useUpdates';
 
 const Cell = ({ children, className }) => (
     <td>
@@ -38,6 +39,8 @@ const HistoryTable = () => {
     useEffect(() => {
         load();
     }, [load]);
+
+    useUpdates(['operations'], load);
 
     const columns = isAdmin ? 8 : 7;
     const pages = Math.max(1, Math.ceil(totalCount / PAGE_LIMIT));
