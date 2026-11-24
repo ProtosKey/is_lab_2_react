@@ -202,7 +202,7 @@ const AdminUsers = () => {
                                         <div className="cell ellipsis" title={u.login}>{u.login}</div>
                                     </td>
                                     <td>
-                                        <div className="cell">
+                                        <div className="cell plain">
                                             <Select
                                                 value={u.level}
                                                 disabled={u.id === currentUser?.id}
