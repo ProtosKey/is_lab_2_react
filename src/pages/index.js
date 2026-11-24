@@ -31,7 +31,7 @@ const IndexPage = () => {
             <Card title="Хранилище городов" centered>
                 {user ? (
                     <div className="section-grid">
-                        {SECTIONS.map((section) => (
+                        {SECTIONS.filter((section) => !section.adminOnly || user.level === 'ADMIN').map((section) => (
                             <button
                                 key={section.to}
                                 type="button"

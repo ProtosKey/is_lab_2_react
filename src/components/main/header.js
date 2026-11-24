@@ -12,6 +12,7 @@ export const SECTIONS = [
     { to: '/import', label: 'Импорт', match: ['/import', '/prepare'] },
     { to: '/special', label: 'Спецоперации' },
     { to: '/history', label: 'История' },
+    { to: '/users', label: 'Пользователи', adminOnly: true },
     { to: '/about', label: 'Настройки', match: ['/about', '/settings'] },
 ];
 
@@ -92,7 +93,7 @@ const Header = () => {
                                         <div className="context-grid">
                                             {user ? (
                                                 <>
-                                                    {SECTIONS.map((section) => (
+                                                    {SECTIONS.filter((section) => !section.adminOnly || user.level === 'ADMIN').map((section) => (
                                                         <div key={section.to}>
                                                             <button
                                                                 className={`submit-btn ${matches(section, pathname) ? 'active' : ''}`}

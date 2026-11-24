@@ -14,6 +14,7 @@ import ImportPage from './pages/import';
 import PreparePage from './pages/prepare';
 import SpecialPage from './pages/special';
 import HistoryPage from './pages/history';
+import UsersPage from './pages/users';
 import AboutPage from './pages/about';
 import SettingsPage from './pages/settings';
 
@@ -64,6 +65,7 @@ function App() {
                 <Route path="/prepare" element={<PreparePage />} />
                 <Route path="/special" element={<SpecialPage />} />
                 <Route path="/history" element={<HistoryPage />} />
+                <Route path="/users" element={<UsersPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
