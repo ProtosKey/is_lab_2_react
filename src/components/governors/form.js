@@ -211,7 +211,7 @@ const GovernorForm = ({ id }) => {
                                     .filter((entry) => String(entry.id) !== String(id))
                                     .map((entry) => (
                                         <option key={entry.id} value={entry.id}>
-                                            #{entry.id} — {entry.name}
+                                            #{entry.id} {entry.name}
                                         </option>
                                     ))}
                             </Select>

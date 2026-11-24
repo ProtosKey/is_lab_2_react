@@ -89,7 +89,7 @@ const AdminUsers = () => {
         setOldPassword('');
         setNewPassword('');
         setConfirmPassword('');
-        setNotice(`Пароль пользователя «${selectedUser?.login ?? selectedId}» изменён`);
+        setNotice(`Пароль пользователя (${selectedUser?.login ?? selectedId}) изменен`);
     };
 
     const handleLevelChange = async (id, level) => {

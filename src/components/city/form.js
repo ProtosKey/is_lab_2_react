@@ -164,7 +164,7 @@ const CityForm = ({ id }) => {
             setError(result.data);
             return;
         }
-        dispatch(setNotice(isEdit ? `Город «${payload.name}» обновлён` : `Город «${payload.name}» создан`));
+        dispatch(setNotice(isEdit ? `Город ${payload.name} обновлён` : `Город ${payload.name} создан`));
         navigate('/main');
     };
 
@@ -177,7 +177,7 @@ const CityForm = ({ id }) => {
             setDeleteError(result.data);
             return;
         }
-        dispatch(setNotice(`Город «${form.name.trim()}» удалён`));
+        dispatch(setNotice(`Город ${form.name.trim()} удалён`));
         navigate('/main');
     };
 
@@ -245,7 +245,7 @@ const CityForm = ({ id }) => {
                             </option>
                             {coordinates.items.map((item) => (
                                 <option key={item.id} value={item.id}>
-                                    #{item.id} — ({item.x}, {item.y})
+                                    #{item.id} ({item.x}, {item.y})
                                 </option>
                             ))}
                         </Select>
@@ -372,7 +372,7 @@ const CityForm = ({ id }) => {
                             </option>
                             {governors.items.map((item) => (
                                 <option key={item.id} value={item.id}>
-                                    #{item.id} — {item.name} ({item.age})
+                                    #{item.id} {item.name} ({item.age})
                                 </option>
                             ))}
                         </Select>
@@ -434,7 +434,7 @@ const CityForm = ({ id }) => {
             <Modal
                 open={confirming}
                 title="Удаление города"
-                text={`Удалить город «${form.name.trim()}»? Действие нельзя отменить.`}
+                text={`Удалить город ${form.name.trim()}? Действие нельзя отменить.`}
                 confirmText="Удалить"
                 busy={busy}
                 error={deleteError}

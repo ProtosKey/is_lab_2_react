@@ -199,7 +199,7 @@ const CoordinatesSection = () => {
                                     .filter((item) => item.id !== target?.id)
                                     .map((item) => (
                                         <option key={item.id} value={item.id}>
-                                            #{item.id} — ({item.x}, {item.y})
+                                            #{item.id} ({item.x}, {item.y})
                                         </option>
                                     ))}
                             </Select>

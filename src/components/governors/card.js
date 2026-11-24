@@ -69,7 +69,7 @@ const GovernorsSection = () => {
             del.setDeleteError(result.data);
             return;
         }
-        setNotice(`Губернатор «${target.name}» удалён`);
+        setNotice(`Губернатор ${target.name} удалён`);
         closeDelete();
         if (pageItems.length <= 1 && hasPrev) {
             prev();
@@ -184,8 +184,8 @@ const GovernorsSection = () => {
                 title="Удаление губернатора"
                 text={
                     del.needsReplacement
-                        ? `Удалить губернатора «${target?.name}»? Связанные города будут переданы замене.`
-                        : `Удалить губернатора «${target?.name}»?`
+                        ? `Удалить губернатора ${target?.name}? Связанные города будут переданы замене.`
+                        : `Удалить губернатора ${target?.name}?`
                 }
                 confirmText="Удалить"
                 confirmDisabled={del.confirmDisabled}
@@ -203,7 +203,7 @@ const GovernorsSection = () => {
                                     .filter((item) => item.id !== target?.id)
                                     .map((item) => (
                                         <option key={item.id} value={item.id}>
-                                            #{item.id} — {item.name}
+                                            #{item.id} {item.name}
                                         </option>
                                     ))}
                             </Select>

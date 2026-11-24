@@ -54,7 +54,7 @@ const CityTable = ({ error, notice, reload }) => {
             return;
         }
 
-        dispatch(setNotice(`Город «${target.name}» удалён`));
+        dispatch(setNotice(`Город ${target.name} удалён`));
         closeDelete();
 
         if (items.length === 1 && hasPrev) {
@@ -179,7 +179,7 @@ const CityTable = ({ error, notice, reload }) => {
             <Modal
                 open={Boolean(target)}
                 title="Удаление города"
-                text={target ? `Удалить город «${target.name}»? Действие нельзя отменить.` : ''}
+                text={target ? `Удалить город ${target.name}? Действие нельзя отменить.` : ''}
                 confirmText="Удалить"
                 busy={busy}
                 error={deleteError}
