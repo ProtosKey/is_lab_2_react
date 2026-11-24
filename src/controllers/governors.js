@@ -13,6 +13,12 @@ export const findAll = async () => {
     return result.success ? { success: true, data: result.data.items } : result;
 };
 
+export const findById = (id) =>
+    request(() => api.get(`/governors/${id}`), 'Губернатор не найден');
+
+export const usage = (id) =>
+    request(() => api.get(`/governors/${id}/usage`), 'Ошибка проверки связей');
+
 export const create = (governor) =>
     request(() => api.post('/governors', governor), 'Ошибка создания губернатора');
 

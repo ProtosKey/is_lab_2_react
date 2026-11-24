@@ -7,7 +7,7 @@ const PreparePage = () => {
     const ready = useRequireAuth();
 
     return (
-        <Page back={{ value: 'Вернуться к импорту', to: '/import' }} loading={!ready}>
+        <Page back={{ value: 'Вернуться назад', to: '/import' }} loading={!ready}>
             <Prepare />
         </Page>
     );

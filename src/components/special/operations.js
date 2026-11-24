@@ -16,13 +16,11 @@ import { CLIMATES, climateLabel } from '../../utils/enums';
 import { formatNumber, plural } from '../../utils/format';
 import { toNumber } from '../../utils/validate';
 
-/** Состояние одной операции: занятость, сообщение об успехе и об ошибке. */
 const useAction = () => {
     const [busy, setBusy] = useState(false);
     const [notice, setNotice] = useState('');
     const [error, setError] = useState('');
 
-    /** operation возвращает { success, data, message }; при успехе результат — data. */
     const run = useCallback(async (operation) => {
         setBusy(true);
         setNotice('');
@@ -50,7 +48,6 @@ const useAction = () => {
     return { busy, notice, error, run, reset, fail };
 };
 
-/** Все города одним списком — для селектов переселения. */
 const useCityOptions = (enabled) => {
     const [cities, setCities] = useState([]);
     const [error, setError] = useState('');
@@ -217,7 +214,6 @@ const CountOperation = () => {
     );
 };
 
-/** Удаляет один любой город с выбранным климатом. Только администратор. */
 const DeleteByClimateOperation = ({ onChange }) => {
     const [climate, setClimate] = useState(CLIMATES[0].value);
     const [confirming, setConfirming] = useState(false);
@@ -279,7 +275,6 @@ const DeleteByClimateOperation = ({ onChange }) => {
     );
 };
 
-/** Переселяет всё население источника в выбранный город, источник удаляется. */
 const MoveOperation = ({ cities, loadError, onChange }) => {
     const [source, setSource] = useState('');
     const [target, setTarget] = useState('');
@@ -371,7 +366,6 @@ const MoveOperation = ({ cities, loadError, onChange }) => {
     );
 };
 
-/** Переселяет всё население источника в наименее населённый город. */
 const MoveToSmallestOperation = ({ cities, loadError, onChange }) => {
     const [source, setSource] = useState('');
     const [confirming, setConfirming] = useState(false);
@@ -441,10 +435,6 @@ const MoveToSmallestOperation = ({ cities, loadError, onChange }) => {
     );
 };
 
-/**
- * Спецоперации идут одной колонкой, каждая — в отдельной плашке.
- * Поиск и подсчёт доступны всем; удаление и переселение видит только администратор.
- */
 const SpecialOperations = () => {
     const user = useSelector((state) => state.auth.user);
     const isAdmin = user?.level === 'ADMIN';

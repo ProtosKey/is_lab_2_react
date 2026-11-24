@@ -13,6 +13,12 @@ export const findAll = async () => {
     return result.success ? { success: true, data: result.data.items } : result;
 };
 
+export const findById = (id) =>
+    request(() => api.get(`/coordinates/${id}`), 'Координаты не найдены');
+
+export const usage = (id) =>
+    request(() => api.get(`/coordinates/${id}/usage`), 'Ошибка проверки связей');
+
 export const create = (coordinates) =>
     request(() => api.post('/coordinates', coordinates), 'Ошибка создания координат');
 

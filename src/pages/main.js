@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Page from '../components/main/page';
+import { Card } from '../components/main/card';
 import CityFilters from '../components/city/filters';
 import CityTable from '../components/city/table';
 import { findPage } from '../controllers/cities';
@@ -12,6 +14,7 @@ const NOTICE_DURATION = 5000;
 const MainPage = () => {
     const ready = useRequireAuth();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { query, notice } = useSelector((state) => state.cities);
     const [error, setError] = useState('');
     const sequence = useRef(0);
@@ -48,8 +51,13 @@ const MainPage = () => {
     }, [notice, dispatch]);
 
     return (
-        <Page back={{ value: 'Вернуться в начало', to: '/' }} loading={!ready}>
+        <Page back={{ value: 'Вернуться в начало', to: '/', exact: true }} loading={!ready}>
             <CityFilters />
+            <Card centered className="form-card">
+                <button type="button" className="submit-btn green" onClick={() => navigate('/city')}>
+                    Добавить город
+                </button>
+            </Card>
             <CityTable error={error} notice={notice} reload={load} />
         </Page>
     );

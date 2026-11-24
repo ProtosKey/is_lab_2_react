@@ -90,13 +90,17 @@ const Prepare = () => {
 
     const patch = (setter) => (index, name, value) => {
         setError('');
+        setNotice('');
         setter((prev) => prev.map((row, i) => (i === index ? { ...row, [name]: value } : row)));
     };
     const remove = (setter) => (index) => {
+        setError('');
+        setNotice('');
         setter((prev) => prev.filter((_, i) => i !== index));
     };
     const add = (setter, blank) => () => {
         setError('');
+        setNotice('');
         setter((prev) => [...prev, blank()]);
     };
 
@@ -132,106 +136,106 @@ const Prepare = () => {
 
     return (
         <>
-            <Card title={`Координаты`}>
-                <div className="edit-list">
-                    {coordinates.length === 0 && <p className="info">Записей пока нет</p>}
-                    {coordinates.map((row, index) => (
-                        <div className="edit-row" key={index}>
-                            <input
-                                type="text"
-                                inputMode="numeric"
-                                className="input-data no-add"
-                                aria-label="X"
-                                placeholder="X (не больше 974)"
-                                value={row.x}
-                                onChange={(e) => patchCoordinates(index, 'x', e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                inputMode="numeric"
-                                className="input-data no-add"
-                                aria-label="Y"
-                                placeholder="Y"
-                                value={row.y}
-                                onChange={(e) => patchCoordinates(index, 'y', e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className="small-btn danger"
-                                aria-label="Удалить запись"
-                                onClick={() => remove(setCoordinates)(index)}
-                            >
-                                ✕
-                            </button>
-                        </div>
-                    ))}
-                </div>
-                <button type="button" className="ghost-btn" onClick={add(setCoordinates, emptyCoordinates)}>
-                    Добавить координаты
-                </button>
-            </Card>
-            <Card title={`Губернаторы`}>
-                <div className="edit-list">
+            <div className="stack-column">
+                <Card title="Губернаторы">
                     {governors.length === 0 && <p className="info">Записей пока нет</p>}
                     {governors.map((row, index) => (
-                        <div className="edit-row" key={index}>
-                            <input
-                                className="input-data no-add"
-                                aria-label="Имя"
-                                placeholder="Имя"
-                                value={row.name}
-                                onChange={(e) => patchGovernors(index, 'name', e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                inputMode="numeric"
-                                className="input-data no-add narrow-input"
-                                aria-label="Возраст"
-                                placeholder="Возраст"
-                                value={row.age}
-                                onChange={(e) => patchGovernors(index, 'age', e.target.value)}
-                            />
-                            <DateInput
-                                aria-label="День рождения"
-                                title="День рождения (необязательно)"
-                                value={row.birthday}
-                                onChange={(value) => patchGovernors(index, 'birthday', value)}
-                            />
-                            <button
-                                type="button"
-                                className="small-btn danger"
-                                aria-label="Удалить запись"
-                                onClick={() => remove(setGovernors)(index)}
-                            >
-                                ✕
-                            </button>
+                        <div className="sub-card" key={index}>
+                            <div className="grid-input">
+                                <Field label="Имя">
+                                    <input
+                                        className="input-data no-add"
+                                        aria-label="Имя"
+                                        placeholder="Имя"
+                                        value={row.name}
+                                        onChange={(e) => patchGovernors(index, 'name', e.target.value)}
+                                    />
+                                </Field>
+                                <Field label="Возраст">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Возраст"
+                                        placeholder="Полных лет"
+                                        value={row.age}
+                                        onChange={(e) => patchGovernors(index, 'age', e.target.value)}
+                                    />
+                                </Field>
+                                <Field label="День рождения">
+                                    <DateInput
+                                        aria-label="День рождения"
+                                        title="День рождения (необязательно)"
+                                        value={row.birthday}
+                                        onChange={(value) => patchGovernors(index, 'birthday', value)}
+                                    />
+                                </Field>
+                                <div className="double">
+                                    <button
+                                        type="button"
+                                        className="exit-btn"
+                                        onClick={() => remove(setGovernors)(index)}
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     ))}
-                </div>
-                <button type="button" className="ghost-btn" onClick={add(setGovernors, emptyGovernor)}>
-                    Добавить губернатора
-                </button>
-            </Card>
-            <Card title="Города" double>
+                    <button type="button" className="ghost-btn" onClick={add(setGovernors, emptyGovernor)}>
+                        Добавить губернатора
+                    </button>
+                </Card>
+                <Card title="Координаты">
+                    {coordinates.length === 0 && <p className="info">Записей пока нет</p>}
+                    {coordinates.map((row, index) => (
+                        <div className="sub-card" key={index}>
+                            <div className="grid-input">
+                                <Field label="Координата X">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="X"
+                                        placeholder="Абсцисса не больше 974"
+                                        value={row.x}
+                                        onChange={(e) => patchCoordinates(index, 'x', e.target.value)}
+                                    />
+                                </Field>
+                                <Field label="Координата Y">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Y"
+                                        placeholder="Ордината"
+                                        value={row.y}
+                                        onChange={(e) => patchCoordinates(index, 'y', e.target.value)}
+                                    />
+                                </Field>
+                                <div className="double">
+                                    <button
+                                        type="button"
+                                        className="exit-btn"
+                                        onClick={() => remove(setCoordinates)(index)}
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    <button type="button" className="ghost-btn" onClick={add(setCoordinates, emptyCoordinates)}>
+                        Добавить координаты
+                    </button>
+                </Card>
+            </div>
+            <Card title="Города">
                 {cities.length === 0 && <p className="info">Записей пока нет</p>}
                 {cities.map((city, index) => {
                     const set = (name) => (event) => patchCities(index, name, event.target.value);
-                    const name = city.name.trim();
                     return (
                         <div className="sub-card" key={index}>
-                            <div className="sub-card-title">
-                                <h3>
-                                    Город №{index + 1}
-                                    {name && ` · ${name}`}
-                                </h3>
-                                <button
-                                    type="button"
-                                    className="small-btn danger"
-                                    onClick={() => remove(setCities)(index)}
-                                >
-                                    Удалить
-                                </button>
-                            </div>
                             <div className="grid-input">
                                 <Field label="Название">
                                     <input
@@ -241,114 +245,87 @@ const Prepare = () => {
                                         placeholder="Укажите название"
                                     />
                                 </Field>
-                                <Field label="Координаты">
-                                    <div className="pair">
-                                        <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            className="input-data no-add"
-                                            aria-label="X"
-                                            placeholder="X (не больше 974)"
-                                            value={city.coordinatesX}
-                                            onChange={set('coordinatesX')}
-                                        />
-                                        <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            className="input-data no-add"
-                                            aria-label="Y"
-                                            placeholder="Y"
-                                            value={city.coordinatesY}
-                                            onChange={set('coordinatesY')}
-                                        />
-                                    </div>
-                                </Field>
-                                <Field label="Губернатор">
-                                    <div className="pair">
-                                        <input
-                                            className="input-data no-add"
-                                            aria-label="Имя губернатора"
-                                            placeholder="Имя"
-                                            value={city.governorName}
-                                            onChange={set('governorName')}
-                                        />
-                                        <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            className="input-data no-add"
-                                            aria-label="Возраст губернатора"
-                                            placeholder="Возраст"
-                                            value={city.governorAge}
-                                            onChange={set('governorAge')}
-                                        />
-                                    </div>
-                                </Field>
-                                <Field label="День рождения">
-                                    <DateInput
-                                        aria-label="День рождения губернатора"
-                                        value={city.governorBirthday}
-                                        onChange={(value) => patchCities(index, 'governorBirthday', value)}
+                                <Field label="Координата X">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="X"
+                                        placeholder="Абсцисса не больше 974"
+                                        value={city.coordinatesX}
+                                        onChange={set('coordinatesX')}
                                     />
                                 </Field>
-                                <Field label="Площадь, население">
-                                    <div className="pair">
-                                        <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            className="input-data no-add"
-                                            aria-label="Площадь"
-                                            placeholder="Площадь"
-                                            value={city.area}
-                                            onChange={set('area')}
-                                        />
-                                        <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            className="input-data no-add"
-                                            aria-label="Население"
-                                            placeholder="Население"
-                                            value={city.population}
-                                            onChange={set('population')}
-                                        />
-                                    </div>
+                                <Field label="Координата Y">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Y"
+                                        placeholder="Ордината"
+                                        value={city.coordinatesY}
+                                        onChange={set('coordinatesY')}
+                                    />
                                 </Field>
-                                <Field label="Плотность, высота">
-                                    <div className="pair">
-                                        <input
-                                            type="text"
-                                            inputMode="decimal"
-                                            className="input-data no-add"
-                                            aria-label="Плотность населения"
-                                            placeholder="Плотность"
-                                            value={city.populationDensity}
-                                            onChange={set('populationDensity')}
-                                        />
-                                        <input
-                                            type="text"
-                                            inputMode="decimal"
-                                            className="input-data no-add"
-                                            aria-label="Высота над уровнем моря"
-                                            placeholder="Высота, м"
-                                            value={city.metersAboveSeaLevel}
-                                            onChange={set('metersAboveSeaLevel')}
-                                        />
-                                    </div>
+                                <Field label="Площадь">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Площадь"
+                                        placeholder="Целое число"
+                                        value={city.area}
+                                        onChange={set('area')}
+                                    />
                                 </Field>
-                                <Field label="Даты">
-                                    <div className="pair">
-                                        <DateInput
-                                            aria-label="Дата основания"
-                                            title="Дата основания (необязательно)"
-                                            value={city.establishmentDate}
-                                            onChange={(value) => patchCities(index, 'establishmentDate', value)}
-                                        />
-                                        <DateInput
-                                            aria-label="Дата создания"
-                                            title="Дата создания (необязательно)"
-                                            value={city.creationDate}
-                                            onChange={(value) => patchCities(index, 'creationDate', value)}
-                                        />
-                                    </div>
+                                <Field label="Население">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Население"
+                                        placeholder="Целое число"
+                                        value={city.population}
+                                        onChange={set('population')}
+                                    />
+                                </Field>
+                                <Field label="Плотность">
+                                    <input
+                                        type="text"
+                                        inputMode="decimal"
+                                        className="input-data no-add"
+                                        aria-label="Плотность населения"
+                                        placeholder="Человек на квадратный километр"
+                                        value={city.populationDensity}
+                                        onChange={set('populationDensity')}
+                                    />
+                                </Field>
+                                <Field label="Высота, м">
+                                    <input
+                                        type="text"
+                                        inputMode="decimal"
+                                        className="input-data no-add"
+                                        aria-label="Высота над уровнем моря"
+                                        placeholder="Над уровнем моря"
+                                        value={city.metersAboveSeaLevel}
+                                        onChange={set('metersAboveSeaLevel')}
+                                    />
+                                </Field>
+                                <Field label="Дата основания">
+                                    <DateInput
+                                        aria-label="Дата основания"
+                                        title="Дата основания (необязательно)"
+                                        value={city.establishmentDate}
+                                        onChange={(value) => patchCities(index, 'establishmentDate', value)}
+                                    />
+                                </Field>
+                                <Field label="Дата создания">
+                                    <DateInput
+                                        aria-label="Дата создания"
+                                        title="Дата создания (необязательно)"
+                                        value={city.creationDate}
+                                        onChange={(value) => patchCities(index, 'creationDate', value)}
+                                    />
                                 </Field>
                                 <Field label="Столица">
                                     <Pills
@@ -358,32 +335,68 @@ const Prepare = () => {
                                         onChange={(value) => patchCities(index, 'capital', value)}
                                     />
                                 </Field>
-                                <Field label="Климат и уровень жизни">
-                                    <div className="pair">
-                                        <Select
-                                            value={city.climate}
-                                            onChange={(value) => patchCities(index, 'climate', value)}
-                                        >
-                                            <option value="">Климат не указан</option>
-                                            {CLIMATES.map((item) => (
-                                                <option key={item.value} value={item.value}>
-                                                    {item.label}
-                                                </option>
-                                            ))}
-                                        </Select>
-                                        <Select
-                                            value={city.standardOfLiving}
-                                            onChange={(value) => patchCities(index, 'standardOfLiving', value)}
-                                        >
-                                            <option value="">Выберите уровень</option>
-                                            {STANDARDS_OF_LIVING.map((item) => (
-                                                <option key={item.value} value={item.value}>
-                                                    {item.label}
-                                                </option>
-                                            ))}
-                                        </Select>
-                                    </div>
+                                <Field label="Климат">
+                                    <Select
+                                        value={city.climate}
+                                        onChange={(value) => patchCities(index, 'climate', value)}
+                                    >
+                                        <option value="">Не указан</option>
+                                        {CLIMATES.map((item) => (
+                                            <option key={item.value} value={item.value}>
+                                                {item.label}
+                                            </option>
+                                        ))}
+                                    </Select>
                                 </Field>
+                                <Field label="Уровень жизни">
+                                    <Select
+                                        value={city.standardOfLiving}
+                                        onChange={(value) => patchCities(index, 'standardOfLiving', value)}
+                                    >
+                                        <option value="">Выберите</option>
+                                        {STANDARDS_OF_LIVING.map((item) => (
+                                            <option key={item.value} value={item.value}>
+                                                {item.label}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </Field>
+                                <Field label="Имя губернатора">
+                                    <input
+                                        className="input-data no-add"
+                                        aria-label="Имя губернатора"
+                                        placeholder="Фамилия, имя, отчество"
+                                        value={city.governorName}
+                                        onChange={set('governorName')}
+                                    />
+                                </Field>
+                                <Field label="Возраст губернатора">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        className="input-data no-add"
+                                        aria-label="Возраст губернатора"
+                                        placeholder="Полных лет"
+                                        value={city.governorAge}
+                                        onChange={set('governorAge')}
+                                    />
+                                </Field>
+                                <Field label="День рождения">
+                                    <DateInput
+                                        aria-label="День рождения губернатора"
+                                        value={city.governorBirthday}
+                                        onChange={(value) => patchCities(index, 'governorBirthday', value)}
+                                    />
+                                </Field>
+                                <div className="double">
+                                    <button
+                                        type="button"
+                                        className="exit-btn"
+                                        onClick={() => remove(setCities)(index)}
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     );
